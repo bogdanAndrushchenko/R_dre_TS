@@ -1,0 +1,93 @@
+[
+  {
+    "id": 1,
+    "title": "Setup project repository",
+    "description": "Initialize the project repository and configure version control.",
+    "createdAt": "2025-09-25T09:00:00Z",
+    "status": "done",
+    "priority": "high",
+    "deadline": "2025-09-26T18:00:00Z"
+  },
+  {
+    "id": 2,
+    "title": "Install dependencies",
+    "description": "Install all required npm packages for the project.",
+    "createdAt": "2025-09-26T10:00:00Z",
+    "status": "done",
+    "priority": "medium",
+    "deadline": "2025-09-27T12:00:00Z"
+  },
+  {
+    "id": 3,
+    "title": "Configure TypeScript",
+    "description": "Set up TypeScript configuration and ensure type safety.",
+    "createdAt": "2025-09-27T11:00:00Z",
+    "status": "in_progress",
+    "priority": "high",
+    "deadline": "2025-09-28T17:00:00Z"
+  },
+  {
+    "id": 4,
+    "title": "Create user model",
+    "description": "Design and implement the user data model.",
+    "createdAt": "2025-09-28T09:30:00Z",
+    "status": "todo",
+    "priority": "high",
+    "deadline": "2025-09-29T15:00:00Z"
+  },
+  {
+    "id": 5,
+    "title": "Implement authentication",
+    "description": "Add authentication logic to the project.",
+    "createdAt": "2025-09-29T08:45:00Z",
+    "status": "todo",
+    "priority": "high",
+    "deadline": "2025-10-02T20:00:00Z"
+  },
+  {
+    "id": 6,
+    "title": "Design main page UI",
+    "description": "Create the main page user interface.",
+    "createdAt": "2025-09-30T14:00:00Z",
+    "status": "in_progress",
+    "priority": "medium",
+    "deadline": "2025-10-03T18:00:00Z"
+  },
+  {
+    "id": 7,
+    "title": "Add task management feature",
+    "description": "Implement functionality to add, edit, and delete tasks.",
+    "createdAt": "2025-09-30T15:00:00Z",
+    "status": "todo",
+    "priority": "high",
+    "deadline": "2025-10-05T23:59:00Z"
+  },
+  {
+    "id": 8,
+    "title": "Write unit tests",
+    "description": "Create unit tests for core modules.",
+    "createdAt": "2025-10-01T09:00:00Z",
+    "status": "todo",
+    "priority": "medium",
+    "deadline": "2025-10-06T17:00:00Z"
+  },
+  {
+    "id": 9,
+    "title": "Setup CI/CD pipeline",
+    "description": "Configure continuous integration and deployment.",
+    "createdAt": "2025-10-01T10:00:00Z",
+    "status": "todo",
+    "priority": "medium",
+    "deadline": "2025-10-07T20:00:00Z"
+  },
+  {
+    "id": 10,
+    "title": "Prepare project documentation",
+    "description": "Write documentation for project setup and usage.",
+    "createdAt": "2025-10-01T11:00:00Z",
+    "status": "todo",
+    "priority": "low",
+    "deadline": "2025-10-08T18:00:00Z"
+  }
+]
+
