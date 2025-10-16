@@ -1,5 +1,5 @@
 import {DEFAULT_PRIORITY, DEFAULT_STATUS} from "../../constants";
-import {Priority, Status, Task} from "../dto/Task";
+import {Priority, Status, ITask} from "../modules/tasks/task.types";
 import {randomUUID} from 'crypto';
 
 export function isValidTaskStatus(status:Status): status is Status {
@@ -10,7 +10,7 @@ export function isValidTaskPriority(priority: Priority): priority is Priority {
   return Object.values(Priority).includes(priority as Priority);
 }
 
-export function validateAndNormalizeTask(input: Task): Task {
+export function validateAndNormalizeTask(input: any): ITask {
   if (!input.title) {
     throw new Error('Task title is required and must be a string');
   }
@@ -36,14 +36,14 @@ export function validateAndNormalizeTask(input: Task): Task {
   };
 }
 
-export function parseTasksFromJSON(data: unknown): Task[] {
+export function parseTasksFromJSON(data: unknown): ITask[] {
   if (!Array.isArray(data)) {
     throw new Error('JSON data must be an array');
   }
 
   return data.map((item, index) => {
     try {
-      return validateAndNormalizeTask(item as Task);
+      return validateAndNormalizeTask(item);
     } catch (error) {
       throw new Error(`Invalid task at index ${index}: ${(error as Error).message}`);
     }
