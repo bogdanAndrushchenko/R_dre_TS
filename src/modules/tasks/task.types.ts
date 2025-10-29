@@ -12,30 +12,30 @@ export enum Priority {
   URGENT = 'urgent'
 }
 
-export type StringDateNull = string | Date | null;
-export type StringDateUndefined = string | Date | undefined;
-export type StringNumberUndefined = string | number | undefined;
+export type DeadlineType = string | Date | null;
+export type CreateUpdateAtType = string | Date | undefined;
+export type IssueIdType = string | number | undefined;
 
 export interface ITask {
-  id?: StringNumberUndefined;
+  id?: IssueIdType;
   title: string;
   description: string;
-  createdAt?: StringDateUndefined;
+  createdAt?: CreateUpdateAtType;
   status: Status;
   priority: Priority;
-  deadline?: StringDateNull;
-  updatedAt?: StringDateUndefined;
+  deadline?: DeadlineType;
+  updatedAt?: CreateUpdateAtType;
 }
 
 export class Task implements ITask {
-  id?: StringNumberUndefined;
+  id?: IssueIdType;
   title: string;
   description: string;
-  createdAt?: StringDateUndefined;
+  createdAt?: CreateUpdateAtType;
   status: Status;
   priority: Priority;
-  deadline?: StringDateNull;
-  updatedAt?: StringDateUndefined;
+  deadline?: DeadlineType;
+  updatedAt?: CreateUpdateAtType;
 
   constructor(data: ITask) {
     this.id = data.id;
@@ -63,8 +63,8 @@ export class Task implements ITask {
 }
 
 export class Subtask extends Task {
-  parentId: StringNumberUndefined;
-  constructor(data: ITask & { parentId: StringNumberUndefined }) {
+  parentId: IssueIdType;
+  constructor(data: ITask & { parentId: IssueIdType }) {
     super(data);
     this.parentId = data.parentId;
   }
@@ -96,8 +96,8 @@ export class Story extends Task {
 }
 
 export class Epic extends Task {
-  children: StringNumberUndefined[];
-  constructor(data: ITask & { children: StringNumberUndefined[] }) {
+  children: IssueIdType[];
+  constructor(data: ITask & { children: IssueIdType[] }) {
     super(data);
     this.children = data.children;
   }

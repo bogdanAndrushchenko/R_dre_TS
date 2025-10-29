@@ -1,4 +1,4 @@
-import { Task, Subtask, Bug, Story, Epic, ITask, Status, Priority, StringNumberUndefined } from './task.types';
+import { Task, Subtask, Bug, Story, Epic, ITask, Status, Priority, IssueIdType } from './task.types';
 import { validateAndNormalizeTask } from '../../utils/validators';
 
 export class TaskService {
@@ -12,7 +12,7 @@ export class TaskService {
     return this.tasks;
   }
 
-  getTaskById(id: StringNumberUndefined): Task | undefined {
+  getTaskById(id: IssueIdType): Task | undefined {
     return this.tasks.find(task => task.id === id);
   }
 
@@ -23,7 +23,7 @@ export class TaskService {
     return task;
   }
 
-  updateTask(id: StringNumberUndefined, updates: Partial<ITask>): Task | undefined {
+  updateTask(id: IssueIdType, updates: Partial<ITask>): Task | undefined {
     const idx = this.tasks.findIndex(task => task.id === id);
     if (idx === -1) return undefined;
     const updated = { ...this.tasks[idx], ...updates };
@@ -32,7 +32,7 @@ export class TaskService {
     return this.tasks[idx];
   }
 
-  deleteTask(id: StringNumberUndefined): boolean {
+  deleteTask(id: IssueIdType): boolean {
     const idx = this.tasks.findIndex(task => task.id === id);
     if (idx === -1) return false;
     this.tasks.splice(idx, 1);
@@ -48,7 +48,7 @@ export class TaskService {
     });
   }
 
-  isTaskCompletedByDeadline(id: StringNumberUndefined): boolean | undefined {
+  isTaskCompletedByDeadline(id: IssueIdType): boolean | undefined {
     const task = this.getTaskById(id);
     if (!task || !task.deadline) return undefined;
     if (task.status !== Status.DONE) return false;

@@ -1,5 +1,5 @@
 import { TaskService } from './task.service';
-import { ITask, Status, Priority, StringNumberUndefined } from './task.types';
+import { ITask, Status, Priority, IssueIdType } from './task.types';
 
 export class TaskController {
   private service: TaskService;
@@ -12,7 +12,7 @@ export class TaskController {
     return this.service.getAllTasks();
   }
 
-  getTaskById(id: StringNumberUndefined) {
+  getTaskById(id: IssueIdType) {
     return this.service.getTaskById(id);
   }
 
@@ -20,11 +20,11 @@ export class TaskController {
     return this.service.createTask(data);
   }
 
-  updateTask(id: StringNumberUndefined, updates: Partial<ITask>) {
+  updateTask(id: IssueIdType, updates: Partial<ITask>) {
     return this.service.updateTask(id, updates);
   }
 
-  deleteTask(id: StringNumberUndefined) {
+  deleteTask(id: IssueIdType) {
     return this.service.deleteTask(id);
   }
 
@@ -32,7 +32,7 @@ export class TaskController {
     return this.service.filterTasks(options);
   }
 
-  isTaskCompletedByDeadline(id: StringNumberUndefined) {
+  isTaskCompletedByDeadline(id: IssueIdType) {
     return this.service.isTaskCompletedByDeadline(id);
   }
 }
