@@ -1,20 +1,31 @@
 import {validateAndNormalizeTask} from '../utils/validators';
-import {Priority, Status, stringNumberUndefined, Task, TaskFilterOptions} from "../dto/Task";
+import {IssueIdType, Priority, Status,  Task, TaskFilterOptions} from "../dto/Task";
 
 export class TaskManager {
-  private tasks: Map<stringNumberUndefined, Task>;
+  private tasks: Map<IssueIdType, Task>;
 
   constructor(initialTasks: Task[] = []) {
-    this.tasks = new Map(initialTasks.map(task => [task.id, task]));
-  }
-
-  public loadTasks(tasks: Task[]): void {
-    tasks.forEach(task => {
+    this.tasks = new Map();
+    initialTasks.forEach(task => {
+      this.assertDefinedId(task.id, 'Initial task id is required');
       this.tasks.set(task.id, task);
     });
   }
 
-  public getTaskById(id: stringNumberUndefined): Task | undefined {
+  private assertDefinedId(id?: IssueIdType, message = 'Task id is required'): asserts id is IssueIdType {
+    if (!id) {
+      throw new Error(message);
+    }
+  }
+
+  public loadTasks(tasks: Task[]): void {
+    tasks.forEach(task => {
+      this.assertDefinedId(task.id, 'Loaded task id is required');
+      this.tasks.set(task.id as IssueIdType, task);
+    });
+  }
+
+  public getTaskById(id: IssueIdType): Task | undefined {
     return this.tasks.get(id);
   }
 
@@ -22,8 +33,9 @@ export class TaskManager {
     return Array.from(this.tasks.values());
   }
 
-  public createTask(input: Task): Task {
+  public createTask(input: unknown): Task {
     const task = validateAndNormalizeTask(input);
+    this.assertDefinedId(task.id, 'Created task id is required');
 
     if (this.tasks.has(task.id)) {
       throw new Error(`Task with id ${task.id} already exists`);
@@ -33,7 +45,7 @@ export class TaskManager {
     return task;
   }
 
-  public updateTask(id: stringNumberUndefined, updates: Partial<Task>): Task {
+  public updateTask(id: IssueIdType, updates: Partial<Task>): Task {
     const existingTask = this.tasks.get(id);
 
     if (!existingTask) {
@@ -45,31 +57,26 @@ export class TaskManager {
       ...updates,
       id,
       updatedAt: new Date()
-    });
+    }) as Task;
+
+    this.assertDefinedId(updatedTask.id, 'Updated task id is required');
 
     this.tasks.set(id, updatedTask);
     return updatedTask;
   }
 
-  public deleteTask(id: stringNumberUndefined): boolean {
+  public deleteTask(id: IssueIdType): boolean {
     return this.tasks.delete(id);
   }
 
   public filterTasks(options: TaskFilterOptions): Task[] {
-    let filtered = Array.from(this.tasks.values());
-
-    if (options.status) {
-      filtered = filtered.filter(task => task.status === options.status);
-    }
-
-    if (options.priority) {
-      filtered = filtered.filter(task => task.priority === options.priority);
-    }
-
-    return filtered;
+    return Array.from(this.tasks.values()).filter(task =>
+      (!options.status || task.status === options.status) &&
+      (!options.priority || task.priority === options.priority)
+    );
   }
 
-  public isTaskOverdue(id: stringNumberUndefined, currentDate: Date = new Date()): boolean {
+  public isTaskOverdue(id: IssueIdType, currentDate: Date = new Date()): boolean {
     const task = this.tasks.get(id);
 
     if (!task) {

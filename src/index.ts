@@ -1,6 +1,38 @@
-import {exampleUsage} from "./main";
+import {fileURLToPath} from 'url';
+import path, {dirname} from 'path';
+import {TaskService} from './modules/tasks/task.service';
+import {TaskController} from './modules/tasks/task.controller';
+import {parseTasksFromJSON} from './utils/validators';
+import * as fs from 'fs';
+import {Priority, Status} from "./modules/tasks/task.types";
 
-exampleUsage().finally();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const tasksPath = path.resolve(__dirname, '../tasks.json');
+const raw = fs.readFileSync(tasksPath, 'utf-8');
+const jsonData = JSON.parse(raw);
+const parsedTasks = parseTasksFromJSON(jsonData);
+
+const service = new TaskService(parsedTasks);
+const controller = new TaskController(service);
+
+// Homework #6 - Example Usage
+console.log('All tasks:', controller.getAllTasks().map(t => t.getTaskInfo()));
+console.log('Get Task by ID (1):', controller.getTaskById(1)?.getTaskInfo());
+console.log('Create Task:', controller.createTask({
+  title: 'New Task from Main',
+  description: 'This task was created in main.ts',
+  priority: Priority.MEDIUM,
+  status: Status.TODO,
+  deadline: new Date('2025-12-31')
+}).getTaskInfo());
+console.log('Update Task (2):', controller.updateTask(2, { status: Status.DONE })?.getTaskInfo());
+console.log('Filter Tasks (Status: TODO, Priority: HIGH):', controller.filterTasks({ status: Status.TODO, priority: Priority.HIGH }).map(t => t.getTaskInfo()));
+console.log('Is Task Completed by Deadline (2):', controller.isTaskCompletedByDeadline(2));
+console.log('Delete Task (3):', controller.deleteTask(3));
+console.log('All tasks after deletion:', controller.getAllTasks().map(t => t.getTaskInfo()));
+
 // ------------------------------------------------------------
 // Homework #1
 // ------------------------------------------------------------

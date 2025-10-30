@@ -12,24 +12,24 @@ export enum Priority {
   URGENT = 'urgent'
 }
 
-export type stringDateNull = string | Date | null;
-export type stringDateUndefined = string | Date | undefined;
-export type stringNumberUndefined = string | number | undefined;
+export type DeadlineType = string | Date | null;
+export type CreateAtType = string | Date;
+export type IssueIdType = string;
 
 export interface Task {
-  id?: stringNumberUndefined;
+  id?: IssueIdType;
   title: string;
   description: string;
-  createdAt?: stringDateUndefined;
+  createdAt?: CreateAtType;
   status?: Status;
   priority: Priority;
-  deadline?: stringDateNull;
-  updatedAt?: stringDateUndefined;
+  deadline?: DeadlineType;
+  updatedAt?: Date;
 }
 
 export interface TaskFilterOptions {
   status?: Status;
   priority?: Priority;
-  createdAt?: Date;
-  deadline?: stringDateNull;
+  createdAt?: CreateAtType;
+  deadline?: DeadlineType;
 }
