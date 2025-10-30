@@ -13,7 +13,7 @@ export class TaskManager {
   }
 
   private assertDefinedId(id?: IssueIdType, message = 'Task id is required'): asserts id is IssueIdType {
-    if (id === undefined || id === null) {
+    if (!id) {
       throw new Error(message);
     }
   }

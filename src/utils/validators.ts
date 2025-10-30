@@ -13,11 +13,11 @@ export function isValidTaskPriority(priority: unknown): priority is Priority {
 
 export function validateAndNormalizeTask(input: unknown): Task {
 
-  if (typeof input !== 'object' || input === null) {
+  if (typeof input !== 'object' || !input) {
     throw new Error('Task must be an object');
   }
 
-  const obj = input as Record<string, unknown>;
+  const obj = input;
 
   if (!('title' in obj) || typeof obj.title !== 'string' || !obj.title.trim()) {
     throw new Error('Task title is required and must be a non-empty string');
@@ -34,7 +34,7 @@ export function validateAndNormalizeTask(input: unknown): Task {
       : DEFAULT_PRIORITY;
 
   let id: string;
-  if ('id' in obj && typeof obj.id === 'string' && obj.id.trim()) {
+  if ('id' in obj && typeof obj.id === 'string' && obj.id) {
     id = obj.id.trim();
   } else {
     id = randomUUID();
@@ -42,7 +42,7 @@ export function validateAndNormalizeTask(input: unknown): Task {
 
   let description: string = '';
   if ('description' in obj) {
-    if (obj.description !== undefined && obj.description !== null) {
+    if (obj.description !== undefined && typeof obj.description !== 'string') {
       if (typeof obj.description !== 'string') {
         throw new Error('Task description must be a string');
       }
@@ -50,23 +50,10 @@ export function validateAndNormalizeTask(input: unknown): Task {
     }
   }
 
-  const now = new Date();
-
-  let createdAt: Date;
-  if ('createdAt' in obj && obj.createdAt !== undefined && obj.createdAt !== null) {
-    if (!(obj.createdAt instanceof Date) && typeof obj.createdAt !== 'string' && typeof obj.createdAt !== 'number') {
-      throw new Error('Task createdAt must be a Date, string, or number');
-    }
-    createdAt = new Date(obj.createdAt);
-    if (isNaN(createdAt.getTime())) {
-      throw new Error('Task createdAt is not a valid date');
-    }
-  } else {
-    createdAt = now;
-  }
+  let createdAt: Date = new Date();
 
   let deadline: Date | null = null;
-  if ('deadline' in obj && obj.deadline !== undefined && obj.deadline !== null) {
+  if ('deadline' in obj) {
     if (!(obj.deadline instanceof Date) && typeof obj.deadline !== 'string' && typeof obj.deadline !== 'number') {
       throw new Error('Task deadline must be a Date, string, or number');
     }
